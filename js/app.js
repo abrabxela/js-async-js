@@ -4,7 +4,6 @@ window.onload = async function () {
   clearPage();
   const result = await getFilms();
   createCardFilm();
-  
 };
 
 //ожидание ввода и создание списка
@@ -76,7 +75,9 @@ function createCardFilm() {
     const img = item.image;
     const rowContainer = document.querySelector("#rowContainer");
     const div = document.createElement("div");
+    const stars = starSummary(item.score);
     div.classList.add("col");
+    
     div.innerHTML = `
               <div class="card">
                 <img
@@ -101,17 +102,13 @@ function createCardFilm() {
                     
                     </div class =stars>
                     <small>
-                      <span class="fa fa-star"></span>
-                      <span class="fa fa-star"></span>
-                      <span class="fa fa-star"></span>
-                      <span class="fa fa-star"></span>
-                      <span class="fa fa-star"></span>
+                        ${stars}      
                     </small>
                   </div>
                 </div>
               </div>`;
-    rowContainer.append(div);
-    
+      rowContainer.append(div);
+      
   });
 }
 // очистка от поиска
@@ -119,4 +116,30 @@ function clearPage() {
   const clear = document.querySelector("#rowContainer");
   clear.innerHTML = "";
   listFilm.splice(0);
+}
+
+//рейтинг
+//создание звезд по типу
+function createStar(isFilled) {
+  if (isFilled) {
+    return '<span class="fa fa-star text-success"></span>';
+  } else {
+    return '<span class="fa fa-star"></span>';
+  }
+}
+//подсчет звезд
+function starSummary(arg) {
+  let rating = (arg * 100) / 20;
+  console.log(rating);
+  let stars = Math.round(rating);
+  console.log(stars);
+  let html = "";
+  for (let i = 0; i < 5; i++) {
+    if (i < stars) {
+      html += createStar(true);
+    } else {
+      html += createStar(false);
+    }
+  }
+  return html;
 }
