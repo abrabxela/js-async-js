@@ -39,7 +39,7 @@ async function getFilms(arg) {
           summary: item.summary,
           url: item.url,
           image: img,
-          //score: item.score,
+          score: item.rating.average,
         };
         listFilm.push(res);
       });
@@ -77,7 +77,7 @@ function createCardFilm() {
     const div = document.createElement("div");
     const stars = starSummary(item.score);
     div.classList.add("col");
-    
+
     div.innerHTML = `
               <div class="card">
                 <img
@@ -107,8 +107,7 @@ function createCardFilm() {
                   </div>
                 </div>
               </div>`;
-      rowContainer.append(div);
-      
+    rowContainer.append(div);
   });
 }
 // очистка от поиска
@@ -129,17 +128,29 @@ function createStar(isFilled) {
 }
 //подсчет звезд
 function starSummary(arg) {
-  let rating = (arg * 100) / 20;
-  console.log(rating);
-  let stars = Math.round(rating);
-  console.log(stars);
-  let html = "";
-  for (let i = 0; i < 5; i++) {
-    if (i < stars) {
-      html += createStar(true);
-    } else {
-      html += createStar(false);
+  if (arg <= 1) {
+    let rating = (arg * 100) / 20;
+    let stars = Math.round(rating);
+    let html = "";
+    for (let i = 0; i < 5; i++) {
+      if (i < stars) {
+        html += createStar(true);
+      } else {
+        html += createStar(false);
+      }
     }
+    return html;
+  }else {
+    let rating = arg;
+    let stars = Math.round(rating);
+    let html = "";
+    for (let i = 0; i < 10; i++) {
+      if (i < stars) {
+        html += createStar(true);
+      } else {
+        html += createStar(false);
+      }
+    }
+    return html;
   }
-  return html;
 }
